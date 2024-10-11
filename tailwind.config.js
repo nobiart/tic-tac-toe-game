@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      lineHeight: {
+        tight: "1.2",
+      },
       // gridTemplateColumns: {
       //   'game-field': 'repeat(3, 30px)',
       // },
