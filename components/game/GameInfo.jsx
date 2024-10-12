@@ -24,14 +24,14 @@ const players = [
     symbol: GAME_SYMBOLS.CROSS,
   },
   {
-    id: 2,
+    id: 3,
     name: "Julia Roberts",
     rating: "1367",
     avatar: avatarSrc3,
     symbol: GAME_SYMBOLS.TRIANGLE,
   },
   {
-    id: 2,
+    id: 4,
     name: "Will Smith",
     rating: "1456",
     avatar: avatarSrc4,
