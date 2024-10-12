@@ -3,14 +3,20 @@ import { useState } from "react";
 import { computeWinner, getNextMove } from "./model";
 
 export function useGameState(playersCount) {
-  const [{ cells, currentMove }, setGameState] = useState(() => ({
-    cells: new Array(19 * 19).fill(null),
-    currentMove: GAME_SYMBOLS.CROSS,
-  }));
+  const [{ cells, currentMove, playersTimeOver }, setGameState] = useState(
+    () => ({
+      cells: new Array(19 * 19).fill(null),
+      currentMove: GAME_SYMBOLS.CROSS,
+      playersTimeOver: [],
+    }),
+  );
 
   const winnerSequence = computeWinner(cells);
 
-  const nextMove = getNextMove(currentMove, playersCount);
+  const nextMove = getNextMove(currentMove, playersCount, playersTimeOver);
+
+  const winnerSymbol =
+    nextMove === currentMove ? currentMove : winnerSequence?.[0];
 
   const handleCellClick = (index) => {
     setGameState((prevState) => {
@@ -18,9 +24,27 @@ export function useGameState(playersCount) {
 
       return {
         ...prevState,
-        currentMove: getNextMove(prevState.currentMove, playersCount),
+        currentMove: getNextMove(
+          prevState.currentMove,
+          playersCount,
+          prevState.playersTimeOver,
+        ),
         cells: prevState.cells.map((cell, i) =>
           i === index ? prevState.currentMove : cell,
+        ),
+      };
+    });
+  };
+
+  const handlePlayerTimeOver = (symbol) => {
+    setGameState((prevState) => {
+      return {
+        ...prevState,
+        playersTimeOver: [...prevState.playersTimeOver, symbol],
+        currentMove: getNextMove(
+          prevState.currentMove,
+          playersCount,
+          prevState.playersTimeOver,
         ),
       };
     });
@@ -31,6 +55,8 @@ export function useGameState(playersCount) {
     nextMove,
     cells,
     handleCellClick,
+    handlePlayerTimeOver,
     winnerSequence,
+    winnerSymbol,
   };
 }

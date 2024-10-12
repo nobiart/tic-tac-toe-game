@@ -9,6 +9,7 @@ export function GameField({
   cells,
   handleCellClick,
   winnerSequence,
+  winnerSymbol,
 }) {
   const actions = (
     <>
@@ -32,6 +33,7 @@ export function GameField({
         {cells.map((symbol, i) => (
           <GameCell
             key={i}
+            disabled={!!winnerSymbol}
             isWinner={winnerSequence?.includes(i)}
             onClick={() => {
               handleCellClick(i);
@@ -82,9 +84,10 @@ function GameGrid({ children }) {
   );
 }
 
-function GameCell({ children, onClick, isWinner }) {
+function GameCell({ children, onClick, isWinner, disabled }) {
   return (
     <button
+      disabled={disabled}
       onClick={onClick}
       className={clsx(
         "border border-slate-200 -ml-px -mt-px flex items-center justify-center",
