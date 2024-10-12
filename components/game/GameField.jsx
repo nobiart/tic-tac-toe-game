@@ -3,8 +3,9 @@ import { UIButton } from "../uiKit/UIButton";
 import { GameSymbol } from "./GameSymbol";
 import { useGameState } from "./useGameState";
 
-export function GameField({ className }) {
-  const { currentMove, nextMove, cells, handleCellClick } = useGameState();
+export function GameField({ className, playersCount }) {
+  const { currentMove, nextMove, cells, handleCellClick } =
+    useGameState(playersCount);
 
   const actions = (
     <>
