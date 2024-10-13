@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { UIButton } from "../uiKit/UIButton";
-import { GameSymbol } from "./GameSymbol";
+import { GameSymbol } from "../game-new/ui/GameSymbol";
 
 export function GameField({
   className,

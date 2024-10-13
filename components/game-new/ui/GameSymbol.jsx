@@ -1,4 +1,4 @@
-import { GAME_SYMBOLS } from "./constants";
+import { GAME_SYMBOLS } from "../constants";
 import { CrossIcon } from "./icons/CrossIcon";
 import { ZeroIcon } from "./icons/ZeroIcon";
 import { TriangleIcon } from "./icons/TriangleIcon";

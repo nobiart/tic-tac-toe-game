@@ -1,11 +1,11 @@
 import clsx from "clsx";
 import { Profile } from "../profile";
-import { GameSymbol } from "./GameSymbol";
-import { GAME_SYMBOLS } from "./constants";
-import avatarSrc1 from "./images/avatar-1.png";
-import avatarSrc2 from "./images/avatar-2.png";
-import avatarSrc3 from "./images/avatar-3.png";
-import avatarSrc4 from "./images/avatar-4.png";
+import { GameSymbol } from "../game-new/ui/GameSymbol";
+import { GAME_SYMBOLS } from "../game-new/constants";
+import avatarSrc1 from "../game-new/ui/images/avatar-1.png";
+import avatarSrc2 from "../game-new/ui/images/avatar-2.png";
+import avatarSrc3 from "../game-new/ui/images/avatar-3.png";
+import avatarSrc4 from "../game-new/ui/images/avatar-4.png";
 import { useEffect, useState } from "react";
 
 const players = [
@@ -67,7 +67,7 @@ export function GameInfo({
 }
 
 function PlayerInfo({ playerInfo, isRight, isTimerRunning, onTimeOver }) {
-  const [seconds, setSeconds] = useState(60);
+  const [seconds, setSeconds] = useState(6);
 
   const minutesString = String(Math.floor(seconds / 60)).padStart(2, "0");
   const secondsString = String(seconds % 60).padStart(2, "0");
@@ -81,7 +81,7 @@ function PlayerInfo({ playerInfo, isRight, isTimerRunning, onTimeOver }) {
 
       return () => {
         clearInterval(interval);
-        setSeconds(60);
+        setSeconds(6);
       };
     }
   }, [isTimerRunning]);
