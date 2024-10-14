@@ -16,15 +16,29 @@ import { useReducer } from "react";
 import { computeWinner } from "./model/computeWinner";
 import { getNextMove } from "./model/getNextMove";
 import { computeWinnerSymbol } from "./model/computeWinnerSymbol";
+import { computePlayerTimer } from "./model/computePlayerTimer";
+import { useInterval } from "../hooks/useInterval";
 
 const PLAYERS_COUNT = 4;
+const GAME_TIMER = 60000;
 
 export function Game() {
   const [gameState, dispatch] = useReducer(
     gameStateReducer,
-    { playersCount: PLAYERS_COUNT },
+    {
+      playersCount: PLAYERS_COUNT,
+      defaultTimer: GAME_TIMER,
+      currentMoveStart: Date.now(),
+    },
     initialState,
   );
+
+  useInterval(1000, gameState.currentMoveStart, () => {
+    dispatch({
+      type: GAME_STATE_ACTIONS.TICK,
+      now: Date.now(),
+    });
+  });
 
   const winnerSequence = computeWinner(gameState.cells);
   const nextMove = getNextMove(gameState);
@@ -48,17 +62,25 @@ export function Game() {
             timeMode={"1 minute for click"}
           />
         }
-        playersList={PLAYERS.slice(0, PLAYERS_COUNT).map((p, i) => (
-          <PlayerInfo
-            key={p.id}
-            avatar={p.avatar}
-            name={p.name}
-            rating={p.rating}
-            symbol={p.symbol}
-            seconds={60}
-            isRight={i % 2 === 1}
-          />
-        ))}
+        playersList={PLAYERS.slice(0, PLAYERS_COUNT).map((p, i) => {
+          const { timer, timerStartAt } = computePlayerTimer(
+            gameState,
+            p.symbol,
+          );
+
+          return (
+            <PlayerInfo
+              key={p.id}
+              avatar={p.avatar}
+              name={p.name}
+              rating={p.rating}
+              symbol={p.symbol}
+              timer={timer}
+              timerStartAt={timerStartAt}
+              isRight={i % 2 === 1}
+            />
+          );
+        })}
         gameMoveInfo={
           <GameMoveInfo currentMove={currentMove} nextMove={nextMove} />
         }
@@ -72,6 +94,7 @@ export function Game() {
               dispatch({
                 type: GAME_STATE_ACTIONS.CELL_CLICK,
                 index: i,
+                now: Date.now(),
               });
             }}
           />
@@ -85,7 +108,7 @@ export function Game() {
             name={p.name}
             rating={p.rating}
             symbol={p.symbol}
-            seconds={60}
+            timer={gameState.timers[p.symbol]}
             isRight={i % 2 === 1}
           />
         ))}
